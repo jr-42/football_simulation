@@ -25,7 +25,7 @@ with open("README.md", "r") as freadme:
     long_description = freadme.read()
 
 setup(
-    name='footbal_simulation',
+    name='football_simulation',
     author='J. J. Reed',
     url='https://github.com/jr-42/football_simulation',
     use_scm_version=True,
