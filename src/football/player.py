@@ -2,12 +2,15 @@ import random
 import pandas as pd
 from datetime import datetime, timedelta
 
+names = pd.read_csv('../../data/names.csv',
+                    header=None, sep=',')
+
 
 class Player:
 
     def __init__(self):
-        self.__name = 'Joe'
-        self.__surname = 'Reed'
+        self.__name = random.choice(names)
+        self.__surname = random.choice(names)
         self.__dob = int((datetime(datetime.now().year-30, 1, 1) +
                          int(365*random.uniform(-3.0, 10.0)
                              ) * timedelta(days=1)
@@ -17,7 +20,8 @@ class Player:
         self.__foot = random.choice(['r', 'l'])
         self.__ca = random.randint(20, 95)
         self.__fa = self.__ca + random.randint(-10, 100-self.__ca)
-        self.__value = (self.__ca/100 + self.__fa/100 + (33-self.age)/100.0) * 1000000
+        self.__value = (self.__ca/100 + self.__fa/100 + (33-self.age)/100.0
+                        ) * 1000000
 
     @property
     def name(self):
