@@ -1,0 +1,6 @@
+tox
+pytest-cov
+pytest-html
+flake8
+flake8-html
+conf_management
