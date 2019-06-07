@@ -66,7 +66,7 @@ class Team:
     @property
     def atts(self):
         return self.__atts
-    
+
     @property
     def theteam(self):
         return self.__equip
