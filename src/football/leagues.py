@@ -6,7 +6,8 @@ from football.teams import Team
 
 def league_table(teams, stats=None):
 
-    cols = ['Name', 'Team_Rating', 'Squad_Value', 'P', 'W', 'D', 'L', 'GF', 'GA', 'GD', 'Points']
+    cols = ['Name', 'Team_Rating', 'Squad_Value',
+            'P', 'W', 'D', 'L', 'GF', 'GA', 'GD', 'Points']
     df = pd.DataFrame(columns=cols)
 
     for i, team in enumerate(teams):
@@ -23,7 +24,7 @@ class League:
 
     def __init__(self):
         self.__name = 'League 1'
-        self.__teams = [Team() for i in range(21)]
+        self.__teams = [Team(league=self.__name) for i in range(21)]
 
     @property
     def name(self):

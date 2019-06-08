@@ -28,7 +28,8 @@ def team_dataframe(gks, defs, mids, atts):
 
 class Team:
 
-    def __init__(self):
+    def __init__(self,
+                 league=None):
         self.__name = random.choice(names) + ' ' + random.choice(team_suffix)
         self.__rating = random.randint(1, 5)
         self.__gks = [Goalkeeper(team=self.__name, team_rating=self.__rating)
@@ -42,6 +43,8 @@ class Team:
 
         self.__equip = team_dataframe(self.__gks, self.__defs,
                                       self.__mids, self.__atts)
+
+        self.__league = league
 
     @property
     def name(self):
@@ -70,3 +73,11 @@ class Team:
     @property
     def theteam(self):
         return self.__equip
+
+    @property
+    def league(self):
+        return self.__league
+
+    @league.setter
+    def league(self, name):
+        self.__league = name
