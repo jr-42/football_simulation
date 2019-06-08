@@ -29,7 +29,7 @@ def team_dataframe(gks, defs, mids, atts):
 class Team:
 
     def __init__(self):
-        self.__name = random.choice(names) + random.choice(team_suffix)
+        self.__name = random.choice(names) + ' ' + random.choice(team_suffix)
         self.__rating = random.randint(1, 5)
         self.__gks = [Goalkeeper(team=self.__name, team_rating=self.__rating)
                       for i in range(3)]
