@@ -72,6 +72,10 @@ class Player:
         return self.__value
 
     @property
+    def rating(self):
+        return self.__ca
+
+    @property
     def age(self):
         dob = datetime.strptime(str(self.__dob), '%Y%m%d')
         dtyears = datetime.now() - dob

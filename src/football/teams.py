@@ -11,7 +11,8 @@ team_suffix = ['Town', 'Rovers', 'United', 'City', '', 'Wanderers',
 def team_dataframe(gks, defs, mids, atts):
 
     players = gks + defs + mids + atts
-    cols = ['Name', 'DOB', 'Age', 'Nationality', 'Position', 'Foot', 'Value']
+    cols = ['Name', 'DOB', 'Age', 'Nationality', 'Position',
+            'Foot', 'Rating', 'Value']
     df = pd.DataFrame(columns=cols)
 
     for i, player in enumerate(players):
@@ -21,6 +22,7 @@ def team_dataframe(gks, defs, mids, atts):
         df.loc[i, 'Nationality'] = player.nationality
         df.loc[i, 'Position'] = player.position
         df.loc[i, 'Foot'] = player.foot
+        df.loc[i, 'Rating'] = player.rating
         df.loc[i, 'Value'] = player.value
 
     return df
@@ -43,6 +45,8 @@ class Team:
 
         self.__equip = team_dataframe(self.__gks, self.__defs,
                                       self.__mids, self.__atts)
+
+        self.__style = random.choice(['442', '343', '532', '433'])
 
         self.__league = league
 
@@ -73,6 +77,10 @@ class Team:
     @property
     def theteam(self):
         return self.__equip
+    
+    @property
+    def style(self):
+        return self.__style
 
     @property
     def league(self):
@@ -81,3 +89,32 @@ class Team:
     @league.setter
     def league(self, name):
         self.__league = name
+
+    def pick_team(self):
+
+        team = self.theteam
+        formation = self.style
+
+        gk = team.loc[team.loc[:, 'Position'] == 'gk', :].sort_values(
+            ['Rating', 'Value'], ascending=[False, False]
+            ).loc[:, 'Name'].values[0]
+        gk = [i for i in self.__gks if i.name == gk]
+
+        deff = team.loc[team.loc[:, 'Position'] == 'def', :].sort_values(
+            ['Rating', 'Value'], ascending=[False, False]
+            ).loc[:, 'Name'].values[:int(formation[0])]
+        deff = [i for i in self.__defs if i.name in deff]
+
+        midd = team.loc[team.loc[:, 'Position'] == 'mid', :].sort_values(
+            ['Rating', 'Value'], ascending=[False, False]
+            ).loc[:, 'Name'].values[:int(formation[1])]
+        midd = [i for i in self.__mids if i.name in midd]
+
+        att = team.loc[team.loc[:, 'Position'] == 'att', :].sort_values(
+            ['Rating', 'Value'], ascending=[False, False]
+            ).loc[:, 'Name'].values[:int(formation[2])]
+        att = [i for i in self.__atts if i.name in att]
+
+        team = gk + deff + midd + att
+
+        return team
