@@ -19,6 +19,26 @@ class Match:
     def away(self):
         return self.__away
 
+    @property
+    def home_team(self):
+        return self.__home.name
+
+    @property
+    def away_team(self):
+        return self.__away.name
+
+    @property
+    def result(self):
+        return self.__result
+
+    @property
+    def home_goals(self):
+        return self.__homegoals
+
+    @property
+    def away_goals(self):
+        return self.__awaygoals
+
     def result_probability(self, team1, team2):
         # relative player rating
         team1_r = sum([i.rating for i in team1])/len(team1)/100.0
@@ -57,13 +77,19 @@ class Match:
             hp = 3
             ap = 0
             score = random.choice([(2, 1), (3, 1), (1, 0), (2, 0)])
+            self.__result = '{} home win'.format(score)
         elif h < v <= (h+a):
             hp = 0
             ap = 3
             score = random.choice([(0, 1), (1, 3), (1, 2), (0, 2)])
+            self.__result = '{} away win'.format(score)
         else:
             hp = 1
             ap = 1
             score = random.choice([(1, 1), (3, 3), (2, 2), (0, 0)])
+            self.__result = '{} draw'.format(score)
+
+        self.__homegoals = score[0]
+        self.__homegoals = score[1]
 
         return hp, ap, score

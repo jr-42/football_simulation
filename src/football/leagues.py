@@ -1,10 +1,8 @@
-import random
 import pandas as pd
-
 from football.teams import Team
 
 
-def league_table(teams, stats=None):
+def league_table(teams, results=None):
 
     cols = ['Name', 'Team_Rating', 'Squad_Value',
             'P', 'W', 'D', 'L', 'GF', 'GA', 'GD', 'Points']
@@ -22,13 +20,21 @@ def league_table(teams, stats=None):
 
 class League:
 
+    i = 1
+
     def __init__(self):
-        self.__name = 'League 1'
+        self.i += 1
+        self.__name = 'League {}'.format(self.i)
         self.__teams = [Team(league=self.__name) for i in range(21)]
+        self.__results = None
 
     @property
     def name(self):
         return self.__name
+
+    @property
+    def teams(self):
+        return self.__teams
 
     @property
     def leaguetable(self):
