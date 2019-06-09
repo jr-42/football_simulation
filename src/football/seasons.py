@@ -12,7 +12,7 @@ class Season:
         else:
             self.__league = league
 
-    def fixture_list(self):
+    def make_fixture_list(self):
         """ Create a schedule for the teams in the list and return it"""
         teams = self.__league.teams
         fixture_list = []
@@ -44,20 +44,22 @@ class Season:
 
         self.__fixture_list = fixture_list
 
-    @property
     def fixtures(self, round):
         ind = round - 1
         fixs = self.__fixture_list[ind]
         for i in fixs:
-            print(i[0] + ' ' + i[1])
+            print(i[0].name + ' VS ' + i[1].name)
 
     def play_round(self):
         results = [Match(i[0], i[1]).play() for i in self.__fixture_list[0]]
         self.__results = results
-    
+
     @property
-    def results(self):
+    def resultn(self):
         return self.__results
+
+    def results(self, round):
+        return self.resultn[round-1]
 
     def play_season(self):
         pass
