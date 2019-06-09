@@ -20,10 +20,10 @@ class Match:
         return self.__away
 
     def result_probability(self, team1, team2):
-        # relative player rating
+        # relative player rating
         team1_r = sum([i.rating for i in team1])/len(team1)/100.0
         team2_r = sum([i.rating for i in team2])/len(team2)/100.0
-        
+
         team1_rn = random.uniform(0.5, 0.6)*team1_r/(team1_r+team2_r)
         team2_rn = random.uniform(0.5, 0.6)*team2_r/(team1_r+team2_r)
 
@@ -31,13 +31,13 @@ class Match:
         team1_r = team1_rn + random.uniform(0.1, 0.2)
         team2_r = team2_rn
 
-        # relative team rating
+        # relative team rating
         team1_r = team1_r + random.uniform(0.15, 0.2)*self.home.rating / \
             (self.home.rating+self.away.rating)
         team2_r = team2_r + random.uniform(0.15, 0.2)*self.away.rating / \
             (self.home.rating+self.away.rating)
 
-        # Final 
+        # Final
         p1 = team1_r
         p2 = team2_r
         pdr = 1 - p1 - p2
@@ -67,11 +67,3 @@ class Match:
             score = random.choice([(1, 1), (3, 3), (2, 2), (0, 0)])
 
         return hp, ap, score
-
-
-
-
-
-
-
-

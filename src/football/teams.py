@@ -77,7 +77,7 @@ class Team:
     @property
     def theteam(self):
         return self.__equip
-    
+
     @property
     def style(self):
         return self.__style
