@@ -11,16 +11,14 @@ To install:
 
 In a python interpreter:  
 
-    import football.teams as ft
+    import football.worker as fw
 
-    team1 = ft.Team()
+    m = fw.test_match()
+    
+    m.play()
+   
+Will return home team points, away team points and score
 
-Then 'team1.theteam' to see the team.  
 
-    import football.players as fp 
-
-    player1 = fp.Defender()
-
-Then 'player1.name' or 'player1.value' to see name or value.
 
 
