@@ -3,7 +3,7 @@
 
 A program that will create players, teams and leagues.  
 
-To install:  
+Clone the repoTo install:  
 
     pip install .  
 
@@ -11,16 +11,19 @@ To install:
 
 In a python interpreter:  
 
-    import football.teams as ft
+    import football.seasons as fs
 
-    team1 = ft.Team()
+    s = fs.Season()
+    
+    s.play_season()
 
-Then 'team1.theteam' to see the team.  
+    s.league_table
+   
+The above will create a Season object consisting of a league, 20 teams and 23 players for each team.  
+Season will then create and play a whole seasons worth of fixtures and then display the league table at the end of the season
 
-    import football.players as fp 
+Congratulations to 'Dornoch', the winners of the first full season of the Reed league 2019/2020.
 
-    player1 = fp.Defender()
 
-Then 'player1.name' or 'player1.value' to see name or value.
-
+<img src="https://github.com/jr-42/football_simulation/blob/develop/images/league.png" alt="drawing" width="500"/>
 
