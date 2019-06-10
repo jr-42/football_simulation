@@ -3,7 +3,7 @@
 
 A program that will create players, teams and leagues.  
 
-To install:  
+Clone the repo and install:  
 
     pip install .  
 
@@ -11,13 +11,16 @@ To install:
 
 In a python interpreter:  
 
-    import football.worker as fw
+    import football.seasons as fs
 
-    m = fw.test_match()
+    s = fs.Season()
     
-    m.play()
+    s.play_season()
+
+    s.league_table
    
-Will return home team points, away team points and score
+The above will create a Season object consisting of a league, 20 teams and 23 players for each team.  
+Season will create and play a whole seasons worth of fixtures and then display the league table at the end of the season
 
 
 

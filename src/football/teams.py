@@ -50,6 +50,12 @@ class Team:
 
         self.__league = league
 
+        self.__wins = 0
+        self.__loses = 0
+        self.__draws = 0
+        self.__gf = 0
+        self.__ga = 0
+
     @property
     def name(self):
         return self.__name
@@ -89,6 +95,46 @@ class Team:
     @league.setter
     def league(self, name):
         self.__league = name
+
+    @property
+    def wins(self):
+        return self.__wins
+
+    @wins.setter
+    def wins(self, value):
+        self.__wins = value
+
+    @property
+    def loses(self):
+        return self.__loses
+
+    @loses.setter
+    def loses(self, value):
+        self.__loses = value
+
+    @property
+    def draws(self):
+        return self.__draws
+
+    @draws.setter
+    def draws(self, value):
+        self.__draws = value
+
+    @property
+    def goals_for(self):
+        return self.__gf
+
+    @property
+    def goals_against(self):
+        return self.__ga
+
+    @goals_for.setter
+    def goals_for(self, value):
+        self.__gf = value
+
+    @goals_against.setter
+    def goals_against(self, value):
+        self.__ga = value
 
     def pick_team(self):
 
