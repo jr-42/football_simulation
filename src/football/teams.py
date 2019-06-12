@@ -5,7 +5,7 @@ from football.players import Goalkeeper, Defender, Midfielder, Attacker
 names = list(pd.read_csv('data/towns.csv', index_col=0,
                          header=None, sep=',').loc[:, 1].values)
 team_suffix = ['Town', 'Rovers', 'United', 'City', '', 'Wanderers',
-               'F.C.', '']
+               'F.C.']
 
 
 def team_dataframe(gks, defs, mids, atts):
@@ -55,6 +55,7 @@ class Team:
         self.__draws = 0
         self.__gf = 0
         self.__ga = 0
+        self.__matchs = []
 
     @property
     def name(self):
@@ -135,6 +136,14 @@ class Team:
     @goals_against.setter
     def goals_against(self, value):
         self.__ga = value
+
+    @property
+    def matchs(self):
+        return self.__matchs
+
+    @matchs.setter
+    def matchs(self, value):
+        self.__matchs = self.matchs + [value]
 
     def pick_team(self):
 
