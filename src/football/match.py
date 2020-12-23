@@ -47,8 +47,8 @@ class Match:
         team2_rn = random.uniform(0.4, 0.6)*team2_r/(team1_r+team2_r)
 
         # home advantage
-        team1_r = team1_rn + random.uniform(0.1, 0.2)
-        team2_r = team2_rn
+        team1_r = team1_rn + random.uniform(0.15, 0.2)
+        team2_r = team2_rn + random.uniform(0.05, 0.2)
 
         # relative team rating
         team1_r = team1_r + random.uniform(0.1, 0.2)*self.home.rating / \
@@ -111,6 +111,9 @@ class Match:
             self.away.goals_against = self.away.goals_against + score[0]
 
         self.__homegoals = score[0]
-        self.__homegoals = score[1]
+        self.__awaygoals = score[1]
+
+        self.home.matchs = self
+        self.away.matchs = self
 
         return hp, ap, score

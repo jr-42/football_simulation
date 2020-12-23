@@ -12,4 +12,5 @@ def test_season():
 
     s = fs.Season()
     s.play_season()
-    s.league_table
+
+    return s

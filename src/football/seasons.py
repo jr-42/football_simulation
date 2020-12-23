@@ -110,3 +110,6 @@ class Season:
 
         for day in self.__fixture_list:
             self.__results.append(self.play_round(day))
+
+    def new_season(self):
+        pass
