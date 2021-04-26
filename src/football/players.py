@@ -6,16 +6,14 @@ from football.names_lists import player_names
 nationality = ['English', 'French', 'German', 'Spanish', 'Italian', 'Dutch',
                'Brazilian', 'Argentinian', 'Scottish', 'Portuguese']
 
-random.seed(1) # seed whist in dev so names stay the same during testing
-
 class Player(object):
 
     def __init__(self,
                  team='Free Agent',
                  team_rating=None,
                  ):
-        self.__name = random.choice(player_names)
-        self.__surname = random.choice(player_names)
+        self.__name = random.choice(player_names).lower().capitalize()
+        self.__surname = random.choice(player_names).lower().capitalize()
         self.__dob = int((datetime(datetime.now().year-30, 1, 1) +
                          int(365*random.uniform(-3.0, 10.0)
                              ) * timedelta(days=1)

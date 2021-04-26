@@ -3,8 +3,6 @@ import pandas as pd
 from football.players import Goalkeeper, Defender, Midfielder, Attacker
 from football.names_lists import town_names
 
-random.seed(1) # seed whist in dev so names stay the same during testing
-
 team_suffix = ['Town', 'Rovers', 'United', 'City', '', 'Wanderers',
                'F.C.']
 
@@ -54,12 +52,12 @@ class Team(object):
 
         self.__league = league
 
-        self.__wins = 0
-        self.__loses = 0
-        self.__draws = 0
-        self.__gf = 0
-        self.__ga = 0
-        self.__matchs = []
+        self.__wins = {}
+        self.__loses = {}
+        self.__draws = {}
+        self.__gf = {}
+        self.__ga = {}
+        self.__matches = {}
 
     def __repr__(self):
         return self.name
@@ -107,53 +105,105 @@ class Team(object):
     def league(self, name):
         self.__league = name
 
-    @property
-    def wins(self):
-        return self.__wins
+    def wins(self, season=None):
+        if season:
+            return self.__wins.get(season, 0)
+        else:
+            return sum(list(self.__wins.values()))
 
-    @wins.setter
-    def wins(self, value):
-        self.__wins = value
+    def loses(self, season=None):
+        if season:
+            return self.__loses.get(season, 0)
+        else:
+            return sum(list(self.__loses.values()))
 
-    @property
-    def loses(self):
-        return self.__loses
+    def draws(self, season=None):
+        if season:
+            return self.__draws.get(season, 0)
+        else:
+            return sum(list(self.__draws.values()))
 
-    @loses.setter
-    def loses(self, value):
-        self.__loses = value
+    def goals_for(self, season=None):
+        if season:
+            return self.__gf.get(season, 0)
+        else:
+            return sum(list(self.__gf.values()))
+    
+    def goals_against(self, season=None):
+        if season:
+            return self.__ga.get(season, 0)
+        else:
+            return sum(list(self.__ga.values()))
 
-    @property
-    def draws(self):
-        return self.__draws
+    def matches(self, season, round=None):
+        if not round:
+            return self.__matches[season]
+        else:
+            return self.__matches[season][str(round)]
 
-    @draws.setter
-    def draws(self, value):
-        self.__draws = value
+    def add_match(self, season, round, match):
+        if season in self.__matches.keys():
+            if str(round) in self.__matches[season]:
+                self.__matches[season][str(round)].append(match)
+            else:
+                self.__matches[season][str(round)] = match
+        else:
+            self.__matches[season] = {str(round):match}
 
-    @property
-    def goals_for(self):
-        return self.__gf
+    def win(self, csi: int, goals_for: int, goals_against: int):
 
-    @property
-    def goals_against(self):
-        return self.__ga
+        if csi == 0:
+            raise Exception
 
-    @goals_for.setter
-    def goals_for(self, value):
-        self.__gf = value
+        if str(csi) in self.__wins.keys():
+            self.__wins[str(csi)]  = self.__wins[str(csi)]  + 1
+        else:
+            self.__wins[str(csi)] = 1
 
-    @goals_against.setter
-    def goals_against(self, value):
-        self.__ga = value
+        if str(csi) in self.__gf.keys():
+            self.__gf[str(csi)]  = self.__gf[str(csi)]  + goals_for
+        else:
+            self.__gf[str(csi)] = goals_for
 
-    @property
-    def matchs(self):
-        return self.__matchs
+        if str(csi) in self.__ga.keys():
+            self.__ga[str(csi)]  = self.__ga[str(csi)]  + goals_against
+        else:
+            self.__ga[str(csi)] = goals_against
 
-    @matchs.setter
-    def matchs(self, value):
-        self.__matchs = self.matchs + [value]
+    def lose(self, csi: int, goals_for: int, goals_against: int):
+
+        if str(csi) in self.__loses.keys():
+            self.__loses[str(csi)] = self.__loses[str(csi)] + 1
+        else:
+            self.__loses[str(csi)] = 1
+
+        if str(csi) in self.__gf.keys():
+            self.__gf[str(csi)]  = self.__gf[str(csi)]  + goals_for
+        else:
+            self.__gf[str(csi)] = goals_for
+
+        if str(csi) in self.__ga.keys():
+            self.__ga[str(csi)] = self.__ga[str(csi)]  + goals_against
+        else:
+            self.__ga[str(csi)] = goals_against
+
+    def draw(self, csi: int, goals_for: int, goals_against: int):
+
+        if str(csi) in self.__draws.keys():
+            self.__draws[str(csi)]  = self.__draws[str(csi)]  + 1
+        else:
+            self.__draws[str(csi)] = 1
+
+        if str(csi) in self.__gf.keys():
+            self.__gf[str(csi)] = self.__gf[str(csi)]  + goals_for
+        else:
+            self.__gf[str(csi)] = goals_for
+
+        if str(csi) in self.__ga.keys():
+            self.__ga [str(csi)] = self.__ga[str(csi)]  + goals_against
+        else:
+            self.__ga[str(csi)] = goals_against
+
 
     def get_player(self, player):
         return self.__whole_team[player]
