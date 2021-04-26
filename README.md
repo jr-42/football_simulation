@@ -16,10 +16,12 @@ Current features:
 ## To install on mac
 
 - Clone the repo into a folder and then with terminal:
-    
-    python3 -m venv .venv
-    source .venv/bin/activate
-    pip install -e .
+
+```
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e .
+```
 
 ## Example usage  
 
