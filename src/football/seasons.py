@@ -4,30 +4,36 @@ from football.match import Match
 class Season:
 
     def __init__(self,
-                 league=None):
+                 league=None,
+                 number=None):
         if not league:
             self.__league = League()
         else:
             self.__league = league
 
         self.__results = []
+        self.__number = number + 1
 
         part1 = self.make_fixture_list(league.teams)
         part2 = self.make_fixture_list(league.teams[::-1])
         self.__fixture_list = part1 + part2
 
     def __repr__(self):
-        return f'Season 1 of {self.league}'
+        return f'Season {self.__number} of {self.league}'
 
     def __str__(self):
-        return f'Season 1 of {self.league}'
+        return f'Season {self.__number} of {self.league}'
 
     @property
     def league(self):
         return self.__league
 
+    @property
+    def current_season_index(self):
+        return self.__number
+
     @staticmethod
-    def make_fixture_list(teamlist):
+    def make_fixture_list(teamlist: list):
         """ Create a schedule for the teams in the list and return it"""
         fixture_list = []
         if len(teamlist) % 2 == 1:
@@ -58,26 +64,30 @@ class Season:
 
         return fixture_list
 
-    def fixtures(self, round):
+    def fixtures(self, round: int):
         ind = round - 1
         fixs = self.__fixture_list[ind]
         for i in fixs:
             print(i[0].name + ' VS ' + i[1].name)
 
-    @staticmethod
-    def play_round(day):
-        results = [Match(i[0], i[1]).play() for i in day]
+    def play_round(self, day: list, round=int):
+        results = [Match(i[0], i[1], round=round, seasonind=self.current_season_index).play() for i in day]
         return results
 
-    def results(self, round):
+    def results_by_round(self, round: int):
         round_results = self.__results[round-1]
-        round_fixtures = self.__fixture_list[round-1]
         print('Results for match day: {}'.format(round))
-        for r, f in zip(round_results, round_fixtures):
-            print(f[0].name + ' ', r[2][0], '-', r[2][1], ' ' + f[1].name)
+        for match in round_results:
+            print(match[0].name + ' ', match[-1][0], '-', match[-1][1], ' ' + match[1].name)
 
-    @staticmethod
-    def make_league_table(teams):
+    def results_by_team(self, team: str):
+        team_results = [[i for i in j if ((i[0].name == team) or (i[1].name == team))] for j in self.__results]
+        team_results = [i[0] for i in team_results]
+        print('Results for team: {}'.format(team))
+        for match in team_results:
+            print(match[0].name + ' ', match[-1][0], '-', match[-1][1], ' ' + match[1].name)
+
+    def make_league_table(self,teams):
 
         cols = ['Name', 'P', 'W', 'D', 'L', 'GF', 'GA', 'GD', 'Points']
         df = pd.DataFrame(columns=cols)
@@ -86,14 +96,14 @@ class Season:
             df.loc[i, 'Name'] = team.name
             # df.loc[i, 'Team_Rating'] = team.rating
             # df.loc[i, 'Squad_Value'] = team.theteam.loc[:, 'Value'].sum()
-            df.loc[i, 'P'] = team.wins + team.loses + team.draws
-            df.loc[i, 'W'] = team.wins
-            df.loc[i, 'D'] = team.draws
-            df.loc[i, 'L'] = team.loses
-            df.loc[i, 'GF'] = team.goals_for
-            df.loc[i, 'GA'] = team.goals_against
-            df.loc[i, 'GD'] = team.goals_for - team.goals_against
-            df.loc[i, 'Points'] = (3*team.wins) + team.draws
+            df.loc[i, 'P'] = team.wins(season=str(self.current_season_index)) + team.loses(season=str(self.current_season_index))  + team.draws(season=str(self.current_season_index))
+            df.loc[i, 'W'] = team.wins(season=str(self.current_season_index))
+            df.loc[i, 'D'] = team.draws(season=str(self.current_season_index))
+            df.loc[i, 'L'] = team.loses(season=str(self.current_season_index))
+            df.loc[i, 'GF'] = team.goals_for(season=str(self.current_season_index))
+            df.loc[i, 'GA'] = team.goals_against(season=str(self.current_season_index)) 
+            df.loc[i, 'GD'] = team.goals_for(season=str(self.current_season_index)) - team.goals_against(season=str(self.current_season_index))
+            df.loc[i, 'Points'] = (3*team.wins(season=str(self.current_season_index))) + team.draws(season=str(self.current_season_index)) 
 
         # df.fillna(0, inplace=True)
 
@@ -111,8 +121,5 @@ class Season:
 
     def play_season(self):
 
-        for day in self.__fixture_list:
-            self.__results.append(self.play_round(day))
-
-    def new_season(self):
-        pass
+        for i, day in enumerate(self.__fixture_list):
+            self.__results.append(self.play_round(day, round=i+1))
