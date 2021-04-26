@@ -1,11 +1,21 @@
 
 # Football simulation
 
-A program that will create players, teams and leagues.  
+A program that will create players, teams and leagues.
+Current features:
+- Create a league
+- Simulate multiple seasons
+- Get tables and stats for each season
+- Get fixtures and results for individual teams
+- Get fixtures and results for league seasons and rounds
+- Relegation (** lose three bottom teams each year)
+- Each team has own play style and rating
+- Each player has own stats, position, and information 
 
-Clone the repo
 
-To install on mac with terminal:  
+## To install on mac
+
+- Clone the repo into a folder and then with terminal:
     
     python3 -m venv .venv
     source .venv/bin/activate
@@ -13,10 +23,7 @@ To install on mac with terminal:
 
 ## Example usage  
 
-see notebook
-   
-The above will create a Season object consisting of a league, 20 teams and 23 players for each team.  
-Season will then create and play a whole seasons worth of fixtures and then display the league table at the end of the season
+See Jupyter Notebook
 
 Congratulations to 'Dornoch', the winners of the first full season of the Reed league 2019/2020.
 
