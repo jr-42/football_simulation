@@ -3,9 +3,13 @@
 
 A program that will create players, teams and leagues.  
 
-Clone the repoTo install:  
+Clone the repo
 
-    pip install .  
+To install on mac with terminal:  
+    
+    python3 -m venv .venv
+    source .venv/bin/activate
+    pip install -e .
 
 ## Example usage  
 
