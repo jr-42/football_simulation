@@ -1,7 +1,5 @@
 import pandas as pd
 from football.match import Match
-from football.leagues import League
-
 
 class Season:
 
@@ -14,6 +12,16 @@ class Season:
 
         self.__results = []
 
+        part1 = self.make_fixture_list(league.teams)
+        part2 = self.make_fixture_list(league.teams[::-1])
+        self.__fixture_list = part1 + part2
+
+    def __repr__(self):
+        return f'Season 1 of {self.league}'
+
+    def __str__(self):
+        return f'Season 1 of {self.league}'
+
     @property
     def league(self):
         return self.__league
@@ -21,13 +29,12 @@ class Season:
     @staticmethod
     def make_fixture_list(teamlist):
         """ Create a schedule for the teams in the list and return it"""
-        teams = teamlist
         fixture_list = []
-        if len(teams) % 2 == 1:
-            teams = teams + [None]
+        if len(teamlist) % 2 == 1:
+            teamlist = teamlist + [None]
         # manipulate map_ (array of indexes for list) instead of list itself
         # this takes advantage of even/odd indexes to determine home vs. away
-        n = len(teams)
+        n = len(teamlist)
         map_ = list(range(n))
         mid = n // 2
         for i in range(n-1):
@@ -36,8 +43,8 @@ class Season:
             l2.reverse()
             round = []
             for j in range(mid):
-                t1 = teams[l1[j]]
-                t2 = teams[l2[j]]
+                t1 = teamlist[l1[j]]
+                t2 = teamlist[l2[j]]
                 if j == 0 and i % 2 == 1:
                     # flip the first match only, every other round
                     # (this is because the first match always involves
@@ -103,10 +110,6 @@ class Season:
         return self.make_league_table(self.league.teams)
 
     def play_season(self):
-
-        part1 = self.make_fixture_list(self.__league.teams)
-        part2 = self.make_fixture_list(self.__league.teams[::-1])
-        self.__fixture_list = part1 + part2
 
         for day in self.__fixture_list:
             self.__results.append(self.play_round(day))
