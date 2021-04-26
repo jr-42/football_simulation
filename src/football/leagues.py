@@ -1,14 +1,18 @@
 from football.teams import Team
-
+from football.seasons import Season
 
 class League:
 
-    i = 1
-
-    def __init__(self):
-        self.i += 1
-        self.__name = 'League {}'.format(self.i)
+    def __init__(self, name='Reed League'):
+        self.__name = name
         self.__teams = [Team(league=self.__name) for i in range(20)]
+        self.__teams_dict = {i.name: i for i in self.__teams}
+
+    def __repr__(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
 
     @property
     def name(self):
@@ -17,3 +21,9 @@ class League:
     @property
     def teams(self):
         return self.__teams
+
+    def get_team(self, team):
+        return self.__teams_dict[team]
+
+    def create_season(self):
+        return Season(league=self)

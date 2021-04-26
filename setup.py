@@ -30,7 +30,6 @@ setup(
     url='https://github.com/jr-42/football_simulation',
     use_scm_version=True,
     description='A football simulation',
-    long_description=long_description,
     packages=find_packages(where='src'),
     package_dir={'': 'src'},
     package_data={'': ['*.json']},
@@ -43,6 +42,6 @@ setup(
         'docs':  DOCS_REQS
     },
     classifiers=[
-        'Programming Language :: Python :: 3.6'
+        'Programming Language :: Python :: 3.8'
     ]
 )

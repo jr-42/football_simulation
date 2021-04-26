@@ -1,9 +1,10 @@
 import random
 import pandas as pd
 from football.players import Goalkeeper, Defender, Midfielder, Attacker
+from football.names_lists import town_names
 
-names = list(pd.read_csv('data/towns.csv', index_col=0,
-                         header=None, sep=',').loc[:, 1].values)
+random.seed(1) # seed whist in dev so names stay the same during testing
+
 team_suffix = ['Town', 'Rovers', 'United', 'City', '', 'Wanderers',
                'F.C.']
 
@@ -28,11 +29,11 @@ def team_dataframe(gks, defs, mids, atts):
     return df
 
 
-class Team:
+class Team(object):
 
     def __init__(self,
                  league=None):
-        self.__name = random.choice(names) + ' ' + random.choice(team_suffix)
+        self.__name = random.choice(town_names) + ' ' + random.choice(team_suffix)
         self.__rating = random.randint(1, 5)
         self.__gks = [Goalkeeper(team=self.__name, team_rating=self.__rating)
                       for i in range(3)]
@@ -42,6 +43,9 @@ class Team:
                        for i in range(7)]
         self.__atts = [Attacker(team=self.__name, team_rating=self.__rating)
                        for i in range(5)]
+
+        self.__whole_team = self.__gks + self.__defs + self.__mids + self.__atts
+        self.__whole_team = {i.name:i for i in self.__whole_team}
 
         self.__equip = team_dataframe(self.__gks, self.__defs,
                                       self.__mids, self.__atts)
@@ -56,6 +60,12 @@ class Team:
         self.__gf = 0
         self.__ga = 0
         self.__matchs = []
+
+    def __repr__(self):
+        return self.name
+
+    def __str__(self):
+        return self.name
 
     @property
     def name(self):
@@ -144,6 +154,9 @@ class Team:
     @matchs.setter
     def matchs(self, value):
         self.__matchs = self.matchs + [value]
+
+    def get_player(self, player):
+        return self.__whole_team[player]
 
     def pick_team(self):
 
