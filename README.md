@@ -3,9 +3,11 @@
 
 A program that will create players, teams and leagues.  
 
-Clone the repoTo install:  
+Clone the repo
 
-    pip install .  
+To install:  
+
+    pip install -e .
 
 ## Example usage  
 
