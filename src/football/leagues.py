@@ -42,7 +42,6 @@ class League:
         self.__teams = keep_teams + new_teams
         self.__teams_dict = {i.name: i for i in self.__teams}
 
-
     def new_season(self) -> Season:
         
         if not self.__seasons:
@@ -53,7 +52,7 @@ class League:
         season_ = Season(league=self, index=len(self.__seasons)+1)
         self.__seasons.append(season_)
         self.__current_season = self.__seasons[-1]
-        self.__curent_season_index = len(self.__seasons) + 1
+        self.__current_season_index = len(self.__seasons)
         return season_
 
 
