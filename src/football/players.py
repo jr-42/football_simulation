@@ -1,17 +1,17 @@
 import random
-import pandas as pd
 from datetime import datetime, timedelta
 from football.names_lists import player_names
 
 nationality = ['English', 'French', 'German', 'Spanish', 'Italian', 'Dutch',
                'Brazilian', 'Argentinian', 'Scottish', 'Portuguese']
 
-class Player(object):
+class Player:
 
     def __init__(self,
-                 team='Free Agent',
-                 team_rating=None,
+                 team: str='Free Agent',
+                 team_rating: int=None,
                  ):
+
         self.__name = random.choice(player_names).lower().capitalize()
         self.__surname = random.choice(player_names).lower().capitalize()
         self.__dob = int((datetime(datetime.now().year-30, 1, 1) +
@@ -79,7 +79,7 @@ class Player(object):
         return self.__ca
 
     @property
-    def age(self):
+    def age(self) -> int:
         dob = datetime.strptime(str(self.__dob), '%Y%m%d')
         dtyears = datetime.now() - dob
         age = dtyears.total_seconds()/timedelta(days=365).total_seconds()
