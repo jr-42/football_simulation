@@ -2,16 +2,27 @@
 # Football simulation
 
 A program that will create players, teams and leagues.
+
 Current features:
 - Create a league
 - Simulate multiple seasons
 - Get tables and stats for each season
 - Get fixtures and results for individual teams
 - Get fixtures and results for league seasons and rounds
-- Relegation (** lose three bottom teams each year)
+- Relegation (* lose three bottom teams each year)
 - Each team has own play style and rating
-- Each player has own stats, position, and information 
+- Each player has own position and basic information 
 
+Short Term : Future improvements and features:
+- Player stats (scoring and appearances)
+- Rewards for position finished in league (money, improving rating, new players etc)
+- Improve match engine 
+- Take form into account when calculating win/loss probabilities
+- League heirarchy (promotion and relegation)
+
+Long Term : Future improvements and features:
+- Add GUI for interactivity
+- Ability to create own team and manage à la Football Manager (which i am definitely not copying)
 
 ## To install on mac
 
