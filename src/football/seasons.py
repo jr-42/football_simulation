@@ -38,8 +38,8 @@ class Season:
     def make_fixture_list(teamlist: List) -> List:
         """ Create a schedule for the teams in the list and return it"""
         fixture_list = []
-        if len(teamlist) % 2 == 1:
-            teamlist = teamlist + [None]
+        if len(teamlist) % 2 != 0:
+            raise Exception('Uneven number of teams')
         # manipulate map_ (array of indexes for list) instead of list itself
         # this takes advantage of even/odd indexes to determine home vs. away
         n = len(teamlist)
@@ -76,15 +76,23 @@ class Season:
         results = [Match(matchup[0], matchup[1], roundd=roundd, seasonind=self.current_season_index).play() for matchup in fix_of_round]
         return results
 
-    def results_by_round(self, roundd: str):
+    def __get_results_by_round(self, roundd: str):
         round_results = self.__results[int(roundd)-1]
+        return round_results
+
+    def results_by_round(self, roundd: str):
+        round_results = self.__get_results_by_round(roundd)
         print('Results for match day: {}'.format(roundd))
         for match in round_results:
             print(match[0].name + ' ', match[-1][0], '-', match[-1][1], ' ' + match[1].name)
 
-    def results_by_team(self, team: str):
+    def __get_results_by_team(self, team: str):
         team_results = [[i for i in j if (team in (i[0].name, i[1].name))] for j in self.__results]
         team_results = [i[0] for i in team_results]
+        return team_results
+
+    def results_by_team(self, team: str):
+        team_resumts = self.__get_results_by_team(team)
         print('Results for team: {}'.format(team))
         for match in team_results:
             print(match[0].name + ' ', match[-1][0], '-', match[-1][1], ' ' + match[1].name)

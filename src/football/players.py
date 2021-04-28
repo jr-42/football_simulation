@@ -23,7 +23,6 @@ class Player:
         self.__weight = random.randint(65, 95)
         self.__foot = random.choice(['right', 'left'])
         self.__team = team
-
         if team_rating:
             self.__ca = random.randint(20+((5-team_rating)*10), 95)
         else:
@@ -99,7 +98,7 @@ class Player:
 class Goalkeeper(Player):
 
     def __init__(self, team=None, team_rating=None):
-        Player.__init__(self, team=None, team_rating=None)
+        Player.__init__(self, team, team_rating)
         self.__position = 'gk'
         self.__value = self.value + 1000000
 
@@ -111,7 +110,7 @@ class Goalkeeper(Player):
 class Defender(Player):
 
     def __init__(self, team=None, team_rating=None):
-        Player.__init__(self, team=None, team_rating=None)
+        Player.__init__(self, team, team_rating)
         self.__position = 'def'
         self.__value = self.value + 3000000
 
@@ -123,7 +122,7 @@ class Defender(Player):
 class Midfielder(Player):
 
     def __init__(self, team=None, team_rating=None):
-        Player.__init__(self, team=None, team_rating=None)
+        Player.__init__(self, team, team_rating)
         self.__position = 'mid'
         self.__value = self.value + 7000000
 
@@ -135,7 +134,7 @@ class Midfielder(Player):
 class Attacker(Player):
 
     def __init__(self, team=None, team_rating=None):
-        Player.__init__(self, team=None, team_rating=None)
+        Player.__init__(self, team, team_rating)
         self.__position = 'att'
         self.__value = self.value + 11000000
 

@@ -103,7 +103,7 @@ class Match:
             self.__result = score
 
             self.home.win(self.season_index, score[0], score[1])
-            self.away.lose(self.season_index, score[0], score[1])
+            self.away.lose(self.season_index, score[1], score[0])
 
         elif h < v <= (h+a):
             hp = 0
@@ -111,7 +111,7 @@ class Match:
             score = random.choice([(0, 1), (1, 3), (1, 2), (0, 2)])
             self.__result = score
 
-            self.away.win(self.season_index, score[0], score[1])
+            self.away.win(self.season_index, score[1], score[0])
             self.home.lose(self.season_index, score[0], score[1])
 
         else:
@@ -120,7 +120,7 @@ class Match:
             score = random.choice([(1, 1), (3, 3), (2, 2), (0, 0)])
             self.__result = score
 
-            self.away.draw(self.season_index, score[0], score[1])
+            self.away.draw(self.season_index, score[1], score[0])
             self.home.draw(self.season_index, score[0], score[1])
 
         self.__homegoals = score[0]
