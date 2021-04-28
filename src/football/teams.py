@@ -35,7 +35,7 @@ class Team:
                  league=None):
 
         self.__name = random.choice(town_names) + ' ' + random.choice(team_suffix)
-        self.__rating = random.randint(1, 5)
+        self.__rating = random.randint(1, 6)
         self.__gks = [Goalkeeper(team=self.__name, team_rating=self.__rating)
                       for i in range(3)]
         self.__defs = [Defender(team=self.__name, team_rating=self.__rating)
@@ -93,8 +93,12 @@ class Team:
         return self.__atts
 
     @property
-    def theteam(self):
+    def squadlist(self):
         return self.__equip
+
+    @property
+    def getteam(self):
+        return self.__whole_team
 
     @property
     def style(self):
@@ -104,9 +108,9 @@ class Team:
     def league(self):
         return self.__league
 
-    @league.setter
-    def league(self, name: str):
-        self.__league = name
+    # @league.setter
+    # def league(self, name: str):
+    #     self.__league = name
 
     def wins(self, season: str=None):
         if season:
@@ -216,7 +220,7 @@ class Team:
     
     def pick_team(self) -> List[Player]:
 
-        team = self.theteam
+        team = self.squadlist
         formation = self.style
 
         gk = team.loc[team.loc[:, 'Position'] == 'gk', :].sort_values(

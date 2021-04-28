@@ -72,10 +72,15 @@ def test_season_get_results():
 
 	season.play_season()
 
+	assert len(season._Season__get_fixtures_by_round(1)) == 10
+
 	assert len(season._Season__get_results_by_round(1)) == 10
 
 	teamA = league.teams[0].name
 	assert len(season._Season__get_results_by_team(teamA)) == 38
+
+	season.results_by_team(teamA)
+	season.results_by_round(1)
 
 
 

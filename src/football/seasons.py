@@ -66,9 +66,14 @@ class Season:
 
         return fixture_list
 
-    def fixtures(self, roundd: str):
+    def __get_fixtures_by_round(self, roundd: str):
         ind = int(roundd) - 1
         fixs = self.__fixture_list[ind]
+        return fixs
+
+
+    def fixtures_by_round(self, roundd: str):
+        fixs = self.__get_fixtures_by_round(roundd)
         for i in fixs:
             print(i[0].name + ' VS ' + i[1].name)
 
@@ -121,7 +126,7 @@ class Season:
             ['Points', 'GD', 'GF'],
             ascending=[False, False, False]).reset_index(drop=True)
 
-        df.index = range(1, len(df)+1)
+        df.index = list(range(1, len(df)+1))
 
         return df
 
