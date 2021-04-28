@@ -61,5 +61,21 @@ def test_season_play_season():
 	assert season.league_table['GF'].sum() == season.league_table['GA'].sum()
 	assert season.league_table['GD'].sum() == 0
 
+	
+
+
+def test_season_get_results():
+
+	league = League('Joe')
+
+	season = Season(league=league, index=1)
+
+	season.play_season()
+
 	assert len(season._Season__get_results_by_round(1)) == 10
+
+	teamA = league.teams[0].name
+	assert len(season._Season__get_results_by_team(teamA)) == 38
+
+
 
