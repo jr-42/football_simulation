@@ -92,7 +92,7 @@ class Season:
         return team_results
 
     def results_by_team(self, team: str):
-        team_resumts = self.__get_results_by_team(team)
+        team_results = self.__get_results_by_team(team)
         print('Results for team: {}'.format(team))
         for match in team_results:
             print(match[0].name + ' ', match[-1][0], '-', match[-1][1], ' ' + match[1].name)
