@@ -7,9 +7,9 @@ class League:
         self.__name = name
         self.__teams = [Team(league=self.__name) for i in range(20)]
         self.__teams_dict = {i.name: i for i in self.__teams}
-        self.__seasons = []
-        self.__current_season = None
-        self.__current_season_index = None
+        self.__seasons: List = None
+        self.__current_season: Season = None
+        self.__current_season_index: int = None
 
     def __repr__(self):
         return self.name
@@ -33,7 +33,7 @@ class League:
     def teams(self):
         return self.__teams
 
-    def get_team(self, team):
+    def get_team(self, team) -> Team:
         return self.__teams_dict[team]
 
     def relegation(self):
@@ -42,16 +42,19 @@ class League:
         self.__teams = keep_teams + new_teams
         self.__teams_dict = {i.name: i for i in self.__teams}
 
-
-    def new_season(self):
+    def new_season(self) -> Season:
+        
+        if not self.__seasons:
+            self.__seasons = []
         if len(self.__seasons) > 0:
             self.relegation()
-        season_ = Season(league=self, number=len(self.__seasons))
+        
+        season_ = Season(league=self, index=len(self.__seasons)+1)
         self.__seasons.append(season_)
         self.__current_season = self.__seasons[-1]
-        self.__curent_season_index = len(self.__seasons) + 1
+        self.__current_season_index = len(self.__seasons)
         return season_
 
 
-    def get_season(self, index):
+    def get_season(self, index: int) -> Season:
         return self.__seasons[index-1]

@@ -1,13 +1,15 @@
 import random
+from typing import Dict, List
 import pandas as pd
-from football.players import Goalkeeper, Defender, Midfielder, Attacker
+
+from football.players import Player, Goalkeeper, Defender, Midfielder, Attacker
 from football.names_lists import town_names
 
 team_suffix = ['Town', 'Rovers', 'United', 'City', '', 'Wanderers',
                'F.C.']
 
 
-def team_dataframe(gks, defs, mids, atts):
+def team_dataframe(gks: List[Player], defs: List[Player], mids: List[Player], atts: List[Player]) -> pd.DataFrame:
 
     players = gks + defs + mids + atts
     cols = ['Name', 'DOB', 'Age', 'Nationality', 'Position',
@@ -27,12 +29,13 @@ def team_dataframe(gks, defs, mids, atts):
     return df
 
 
-class Team(object):
+class Team:
 
     def __init__(self,
                  league=None):
+
         self.__name = random.choice(town_names) + ' ' + random.choice(team_suffix)
-        self.__rating = random.randint(1, 5)
+        self.__rating = random.randint(1, 6)
         self.__gks = [Goalkeeper(team=self.__name, team_rating=self.__rating)
                       for i in range(3)]
         self.__defs = [Defender(team=self.__name, team_rating=self.__rating)
@@ -52,12 +55,12 @@ class Team(object):
 
         self.__league = league
 
-        self.__wins = {}
-        self.__loses = {}
-        self.__draws = {}
-        self.__gf = {}
-        self.__ga = {}
-        self.__matches = {}
+        self.__wins: Dict = {}
+        self.__loses: Dict = {}
+        self.__draws: Dict = {}
+        self.__gf: Dict = {}
+        self.__ga: Dict = {}
+        self.__matches: Dict = {}
 
     def __repr__(self):
         return self.name
@@ -90,8 +93,12 @@ class Team(object):
         return self.__atts
 
     @property
-    def theteam(self):
+    def squadlist(self):
         return self.__equip
+
+    @property
+    def getteam(self):
+        return self.__whole_team
 
     @property
     def style(self):
@@ -101,54 +108,56 @@ class Team(object):
     def league(self):
         return self.__league
 
-    @league.setter
-    def league(self, name):
-        self.__league = name
+    # @league.setter
+    # def league(self, name: str):
+    #     self.__league = name
 
-    def wins(self, season=None):
+    def wins(self, season: str=None):
         if season:
             return self.__wins.get(season, 0)
         else:
             return sum(list(self.__wins.values()))
 
-    def loses(self, season=None):
+    def loses(self, season: str=None):
         if season:
             return self.__loses.get(season, 0)
         else:
             return sum(list(self.__loses.values()))
 
-    def draws(self, season=None):
+    def draws(self, season: str=None):
         if season:
             return self.__draws.get(season, 0)
         else:
             return sum(list(self.__draws.values()))
 
-    def goals_for(self, season=None):
+    def goals_for(self, season: str=None):
         if season:
             return self.__gf.get(season, 0)
         else:
             return sum(list(self.__gf.values()))
     
-    def goals_against(self, season=None):
+    def goals_against(self, season: str=None):
         if season:
             return self.__ga.get(season, 0)
         else:
             return sum(list(self.__ga.values()))
 
-    def matches(self, season, round=None):
-        if not round:
+    def matches(self, season: str, roundd: str=None):
+        
+        if not roundd:
             return self.__matches[season]
         else:
-            return self.__matches[season][str(round)]
+            return self.__matches[season][roundd]
 
-    def add_match(self, season, round, match):
+    def add_match(self, season: str, roundd: str, match):
+        
         if season in self.__matches.keys():
             if str(round) in self.__matches[season]:
-                self.__matches[season][str(round)].append(match)
+                self.__matches[season][roundd].append(match)
             else:
-                self.__matches[season][str(round)] = match
+                self.__matches[season][roundd] = match
         else:
-            self.__matches[season] = {str(round):match}
+            self.__matches[season] = {roundd:match}
 
     def win(self, csi: int, goals_for: int, goals_against: int):
 
@@ -205,12 +214,13 @@ class Team(object):
             self.__ga[str(csi)] = goals_against
 
 
-    def get_player(self, player):
+    def get_player(self, player: str) -> Player:
         return self.__whole_team[player]
 
-    def pick_team(self):
+    
+    def pick_team(self) -> List[Player]:
 
-        team = self.theteam
+        team = self.squadlist
         formation = self.style
 
         gk = team.loc[team.loc[:, 'Position'] == 'gk', :].sort_values(

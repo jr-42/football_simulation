@@ -1,17 +1,17 @@
 import random
-import pandas as pd
 from datetime import datetime, timedelta
 from football.names_lists import player_names
 
 nationality = ['English', 'French', 'German', 'Spanish', 'Italian', 'Dutch',
                'Brazilian', 'Argentinian', 'Scottish', 'Portuguese']
 
-class Player(object):
+class Player:
 
     def __init__(self,
-                 team='Free Agent',
-                 team_rating=None,
+                 team: str='Free Agent',
+                 team_rating: int=None,
                  ):
+
         self.__name = random.choice(player_names).lower().capitalize()
         self.__surname = random.choice(player_names).lower().capitalize()
         self.__dob = int((datetime(datetime.now().year-30, 1, 1) +
@@ -23,7 +23,6 @@ class Player(object):
         self.__weight = random.randint(65, 95)
         self.__foot = random.choice(['right', 'left'])
         self.__team = team
-
         if team_rating:
             self.__ca = random.randint(20+((5-team_rating)*10), 95)
         else:
@@ -79,7 +78,7 @@ class Player(object):
         return self.__ca
 
     @property
-    def age(self):
+    def age(self) -> int:
         dob = datetime.strptime(str(self.__dob), '%Y%m%d')
         dtyears = datetime.now() - dob
         age = dtyears.total_seconds()/timedelta(days=365).total_seconds()
@@ -99,7 +98,7 @@ class Player(object):
 class Goalkeeper(Player):
 
     def __init__(self, team=None, team_rating=None):
-        Player.__init__(self, team=None, team_rating=None)
+        Player.__init__(self, team, team_rating)
         self.__position = 'gk'
         self.__value = self.value + 1000000
 
@@ -111,7 +110,7 @@ class Goalkeeper(Player):
 class Defender(Player):
 
     def __init__(self, team=None, team_rating=None):
-        Player.__init__(self, team=None, team_rating=None)
+        Player.__init__(self, team, team_rating)
         self.__position = 'def'
         self.__value = self.value + 3000000
 
@@ -123,7 +122,7 @@ class Defender(Player):
 class Midfielder(Player):
 
     def __init__(self, team=None, team_rating=None):
-        Player.__init__(self, team=None, team_rating=None)
+        Player.__init__(self, team, team_rating)
         self.__position = 'mid'
         self.__value = self.value + 7000000
 
@@ -135,7 +134,7 @@ class Midfielder(Player):
 class Attacker(Player):
 
     def __init__(self, team=None, team_rating=None):
-        Player.__init__(self, team=None, team_rating=None)
+        Player.__init__(self, team, team_rating)
         self.__position = 'att'
         self.__value = self.value + 11000000
 

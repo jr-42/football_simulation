@@ -1,20 +1,23 @@
 import random
+from typing import Tuple
+from football.teams import Team
 
 
 class Match:
 
     def __init__(self,
-                 team1,
-                 team2,
-                 round,
-                 seasonind):
+                 team1: Team,
+                 team2: Team,
+                 roundd: int,
+                 seasonind: int):
 
-        self.__home = team1
-        self.__away = team2
-        self.__round = round
-        self.__seasonind = seasonind
-        self.__homegoals = None
-        self.__awaygoals = None
+        self.__home: Team = team1
+        self.__away: Team = team2
+        self.__round: int = roundd
+        self.__seasonind: int = seasonind
+        self.__homegoals: int = None
+        self.__awaygoals: int = None
+        self.__result: Tuple = None
 
     def __str__(self):
         return f"{self.home_team}  {self.home_goals} - {self.away_goals}  {self.away_team}"
@@ -58,7 +61,7 @@ class Match:
     def away_goals(self):
         return self.__awaygoals
 
-    def result_probability(self, team1, team2):
+    def result_probability(self, team1: Team, team2: Team) -> Tuple[float, float, float]:
         # relative player rating
         team1_r = sum([i.rating for i in team1])/len(team1)/100.0
         team2_r = sum([i.rating for i in team2])/len(team2)/100.0
@@ -84,7 +87,7 @@ class Match:
         return (p1, p2, pdr)
 
 
-    def play(self):
+    def play(self) -> Tuple[Team, Team, int, int, Tuple[int, int]]:
 
         home11 = self.home.pick_team()
         away11 = self.away.pick_team()
@@ -97,33 +100,33 @@ class Match:
             hp = 3
             ap = 0
             score = random.choice([(2, 1), (3, 1), (1, 0), (2, 0)])
-            self.__result = '{} home win'.format(score)
+            self.__result = score
 
             self.home.win(self.season_index, score[0], score[1])
-            self.away.lose(self.season_index, score[0], score[1])
+            self.away.lose(self.season_index, score[1], score[0])
 
         elif h < v <= (h+a):
             hp = 0
             ap = 3
             score = random.choice([(0, 1), (1, 3), (1, 2), (0, 2)])
-            self.__result = '{} away win'.format(score)
+            self.__result = score
 
-            self.away.win(self.season_index, score[0], score[1])
+            self.away.win(self.season_index, score[1], score[0])
             self.home.lose(self.season_index, score[0], score[1])
 
         else:
             hp = 1
             ap = 1
             score = random.choice([(1, 1), (3, 3), (2, 2), (0, 0)])
-            self.__result = '{} draw'.format(score)
+            self.__result = score
 
-            self.away.draw(self.season_index, score[0], score[1])
+            self.away.draw(self.season_index, score[1], score[0])
             self.home.draw(self.season_index, score[0], score[1])
 
         self.__homegoals = score[0]
         self.__awaygoals = score[1]
 
-        self.home.add_match(str(self.season_index), self.round, self)
-        self.away.add_match(str(self.season_index), self.round, self)
+        self.home.add_match(str(self.season_index), str(self.round), self)
+        self.away.add_match(str(self.season_index), str(self.round), self)
 
         return self.home, self.away, hp, ap, score

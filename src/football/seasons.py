@@ -1,28 +1,30 @@
 import pandas as pd
+from typing import List, Tuple
 from football.match import Match
 
 class Season:
 
     def __init__(self,
                  league=None,
-                 number=None):
+                 index: int=None):
+        
         if not league:
             self.__league = League()
         else:
             self.__league = league
 
-        self.__results = []
-        self.__number = number + 1
+        self.__results: List = None
+        self.__index: str = str(index)
 
         part1 = self.make_fixture_list(league.teams)
         part2 = self.make_fixture_list(league.teams[::-1])
         self.__fixture_list = part1 + part2
 
     def __repr__(self):
-        return f'Season {self.__number} of {self.league}'
+        return f'Season {self.__index} of {self.league}'
 
     def __str__(self):
-        return f'Season {self.__number} of {self.league}'
+        return f'Season {self.__index} of {self.league}'
 
     @property
     def league(self):
@@ -30,14 +32,14 @@ class Season:
 
     @property
     def current_season_index(self):
-        return self.__number
+        return self.__index
 
     @staticmethod
-    def make_fixture_list(teamlist: list):
+    def make_fixture_list(teamlist: List) -> List:
         """ Create a schedule for the teams in the list and return it"""
         fixture_list = []
-        if len(teamlist) % 2 == 1:
-            teamlist = teamlist + [None]
+        if len(teamlist) % 2 != 0:
+            raise Exception('Uneven number of teams')
         # manipulate map_ (array of indexes for list) instead of list itself
         # this takes advantage of even/odd indexes to determine home vs. away
         n = len(teamlist)
@@ -47,7 +49,7 @@ class Season:
             l1 = map_[:mid]
             l2 = map_[mid:]
             l2.reverse()
-            round = []
+            roundd = []
             for j in range(mid):
                 t1 = teamlist[l1[j]]
                 t2 = teamlist[l2[j]]
@@ -55,39 +57,52 @@ class Season:
                     # flip the first match only, every other round
                     # (this is because the first match always involves
                     # the last player in the list)
-                    round.append((t2, t1))
+                    roundd.append((t2, t1))
                 else:
-                    round.append((t1, t2))
-            fixture_list.append(round)
+                    roundd.append((t1, t2))
+            fixture_list.append(roundd)
             # rotate list by n/2, leaving last element at the end
             map_ = map_[mid:-1] + map_[:mid] + map_[-1:]
 
         return fixture_list
 
-    def fixtures(self, round: int):
-        ind = round - 1
+    def __get_fixtures_by_round(self, roundd: str):
+        ind = int(roundd) - 1
         fixs = self.__fixture_list[ind]
+        return fixs
+
+
+    def fixtures_by_round(self, roundd: str):
+        fixs = self.__get_fixtures_by_round(roundd)
         for i in fixs:
             print(i[0].name + ' VS ' + i[1].name)
 
-    def play_round(self, day: list, round=int):
-        results = [Match(i[0], i[1], round=round, seasonind=self.current_season_index).play() for i in day]
+    def play_round(self, fix_of_round: List[Tuple], roundd=int) -> List:
+        results = [Match(matchup[0], matchup[1], roundd=roundd, seasonind=self.current_season_index).play() for matchup in fix_of_round]
         return results
 
-    def results_by_round(self, round: int):
-        round_results = self.__results[round-1]
-        print('Results for match day: {}'.format(round))
+    def __get_results_by_round(self, roundd: str):
+        round_results = self.__results[int(roundd)-1]
+        return round_results
+
+    def results_by_round(self, roundd: str):
+        round_results = self.__get_results_by_round(roundd)
+        print('Results for match day: {}'.format(roundd))
         for match in round_results:
             print(match[0].name + ' ', match[-1][0], '-', match[-1][1], ' ' + match[1].name)
 
-    def results_by_team(self, team: str):
-        team_results = [[i for i in j if ((i[0].name == team) or (i[1].name == team))] for j in self.__results]
+    def __get_results_by_team(self, team: str):
+        team_results = [[i for i in j if (team in (i[0].name, i[1].name))] for j in self.__results]
         team_results = [i[0] for i in team_results]
+        return team_results
+
+    def results_by_team(self, team: str):
+        team_results = self.__get_results_by_team(team)
         print('Results for team: {}'.format(team))
         for match in team_results:
             print(match[0].name + ' ', match[-1][0], '-', match[-1][1], ' ' + match[1].name)
 
-    def make_league_table(self,teams):
+    def make_league_table(self, teams: List):
 
         cols = ['Name', 'P', 'W', 'D', 'L', 'GF', 'GA', 'GD', 'Points']
         df = pd.DataFrame(columns=cols)
@@ -111,15 +126,17 @@ class Season:
             ['Points', 'GD', 'GF'],
             ascending=[False, False, False]).reset_index(drop=True)
 
-        df.index = range(1, len(df)+1)
+        df.index = list(range(1, len(df)+1))
 
         return df
 
     @property
-    def league_table(self):
+    def league_table(self) -> pd.DataFrame:
         return self.make_league_table(self.league.teams)
 
     def play_season(self):
 
-        for i, day in enumerate(self.__fixture_list):
-            self.__results.append(self.play_round(day, round=i+1))
+        for i, fix_of_round in enumerate(self.__fixture_list):
+            if not self.__results:
+                self.__results = []
+            self.__results.append(self.play_round(fix_of_round, roundd=i+1))
