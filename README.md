@@ -38,8 +38,10 @@ pip install -e .
 
 See Jupyter Notebook
 
-Congratulations to 'Dornoch', the winners of the first full season of the Reed league 2019/2020.
+Congratulations to 'Lochgilphead'. Winners of the 2019/2020 and 2020/2021 Joe League. Hard luck for 'Axminster Town', losing out on goal difference in season 2.
 
 
-<img src="https://github.com/jr-42/football_simulation/blob/develop/images/league.png" alt="drawing" width="500"/>
+<img src="https://github.com/jr-42/football_simulation/blob/develop/images/season1.png" alt="drawing" width="500"/>
 
+
+<img src="https://github.com/jr-42/football_simulation/blob/develop/images/season1.png" alt="drawing" width="500"/>
