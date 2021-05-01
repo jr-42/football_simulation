@@ -2,3 +2,9 @@
 .vscode/
 football_env/
 __pycache__/
+**/*eggs/
+.coverage
+**/*checkpoints/
+htmlcov
+.venv/
+**/*egg-info/
