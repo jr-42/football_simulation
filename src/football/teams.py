@@ -35,7 +35,7 @@ class Team:
                  league=None):
 
         self.__name = random.choice(town_names) + ' ' + random.choice(team_suffix)
-        self.__rating = random.randint(1, 6)
+        self.__rating = random.randint(1, 10)/10.0
         self.__gks = [Goalkeeper(team=self.__name, team_rating=self.__rating)
                       for i in range(3)]
         self.__defs = [Defender(team=self.__name, team_rating=self.__rating)
@@ -112,6 +112,12 @@ class Team:
     # def league(self, name: str):
     #     self.__league = name
 
+    def played(self, season: str=None):
+        if season:
+            return self.__wins.get(season, 0) + self.__draws.get(season, 0) + self.__loses.get(season, 0)
+        else:
+            return sum(list(self.__wins.values())) + sum(list(self.__loses.values())) + sum(list(self.__draws.values()))
+
     def wins(self, season: str=None):
         if season:
             return self.__wins.get(season, 0)
@@ -142,10 +148,10 @@ class Team:
         else:
             return sum(list(self.__ga.values()))
 
-    def matches(self, season: str, roundd: str=None):
+    def get_match(self, season: str, roundd: str):
         
-        if not roundd:
-            return self.__matches[season]
+        if not season or not roundd:
+            raise Exception('Need season and roundd identifier')
         else:
             return self.__matches[season][roundd]
 
@@ -159,7 +165,7 @@ class Team:
         else:
             self.__matches[season] = {roundd:match}
 
-    def win(self, csi: int, goals_for: int, goals_against: int):
+    def win(self, csi: str, goals_for: int, goals_against: int):
 
         if csi == 0:
             raise Exception
@@ -179,7 +185,7 @@ class Team:
         else:
             self.__ga[str(csi)] = goals_against
 
-    def lose(self, csi: int, goals_for: int, goals_against: int):
+    def lose(self, csi: str, goals_for: int, goals_against: int):
 
         if str(csi) in self.__loses.keys():
             self.__loses[str(csi)] = self.__loses[str(csi)] + 1
@@ -196,7 +202,7 @@ class Team:
         else:
             self.__ga[str(csi)] = goals_against
 
-    def draw(self, csi: int, goals_for: int, goals_against: int):
+    def draw(self, csi: str, goals_for: int, goals_against: int):
 
         if str(csi) in self.__draws.keys():
             self.__draws[str(csi)]  = self.__draws[str(csi)]  + 1

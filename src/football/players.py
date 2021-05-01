@@ -23,11 +23,13 @@ class Player:
         self.__weight = random.randint(65, 95)
         self.__foot = random.choice(['right', 'left'])
         self.__team = team
+        self.__goals_scored: dict = {}
+        self.__appearances: dict = {}
         if team_rating:
-            self.__ca = random.randint(20+((5-team_rating)*10), 95)
+            self.__ca = random.randint(20+((5-team_rating*100)*10), 95)/100.0
         else:
-            self.__ca = random.randint(20, 95)
-        self.__fa = self.__ca + random.randint(-10, 100-self.__ca)
+            self.__ca = random.randint(20, 95)/100.0
+        self.__fa = min(self.__ca + random.randint(-10, 100)/100.0, 0.95)
         self.__value = (self.__ca/100 + self.__fa/100 + (33-self.age)/100.0
                         ) * 1000000
 
@@ -94,6 +96,48 @@ class Player:
         Value: €{self.value}"
         print(infos)
 
+    
+    def appearances(self, season: str, roundd: str=None):
+        
+        if season:
+            if not roundd:
+                return self.__appearances[season]
+            else:
+                return self.__appearances[season][roundd]
+
+        else:
+            return sum([sum(i) for i in list(self.__appearances.values())])
+
+    def add_appearance(self, season: str, roundd: str, appearance: int=1):
+        
+        if season in self.__appearances.keys():
+            if str(round) in self.__appearances[season]:
+                self.__appearances[season][roundd].append(appearance)
+            else:
+                self.__appearances[season][roundd] = appearance
+        else:
+            self.__appearances[season] = {roundd:appearance}
+
+    def goals_scored(self, season: str, roundd: str=None):
+        
+        if season:
+            if not roundd:
+                return self.__goals_scored[season]
+            else:
+                return self.__goals_scored[season][roundd]
+        else:
+            return sum([sum(i) for i in list(self.__goals_scored.values())])
+
+    def add_goal(self, season: str, roundd: str, goals_scored: int):
+        
+        if season in self.__goals_scored.keys():
+            if str(round) in self.__goals_scored[season]:
+                self.__goals_scored[season][roundd].append(goals_scored)
+            else:
+                self.__goals_scored[season][roundd] = goals_scored
+        else:
+            self.__goals_scored[season] = {roundd:goals_scored}
+
 
 class Goalkeeper(Player):
 
@@ -101,6 +145,7 @@ class Goalkeeper(Player):
         Player.__init__(self, team, team_rating)
         self.__position = 'gk'
         self.__value = self.value + 1000000
+        self.__goal_scoring = self.rating/5.0
 
     @property
     def position(self):
@@ -113,6 +158,7 @@ class Defender(Player):
         Player.__init__(self, team, team_rating)
         self.__position = 'def'
         self.__value = self.value + 3000000
+        self.__goal_scoring = 0.1 + self.rating/5.0
 
     @property
     def position(self):
@@ -125,6 +171,7 @@ class Midfielder(Player):
         Player.__init__(self, team, team_rating)
         self.__position = 'mid'
         self.__value = self.value + 7000000
+        self.__goal_scoring = 0.3 + self.rating/5.0
 
     @property
     def position(self):
@@ -137,6 +184,7 @@ class Attacker(Player):
         Player.__init__(self, team, team_rating)
         self.__position = 'att'
         self.__value = self.value + 11000000
+        self.__goal_scoring = 0.5 + self.rating/5.0
 
     @property
     def position(self):
