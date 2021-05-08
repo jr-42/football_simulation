@@ -1,0 +1,41 @@
+name: Python application
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Build venv environment
+      run: |
+        python3 -m venv .venv
+        source .venv/bin/activate
+
+    - name: Install dependencies and package
+      run: |
+        echo "Install"
+        pip install -U -e .[develop]
+
+    - name: Prelimiary tests
+      run:
+        echo "Check Compile"
+        python -m compileall src/football/
+
+    - name: Type check with mypy
+      run:
+        echo "Check type stuff"
+        mypy src/football/
+
+    - name: Linting with Pylint
+      run:
+        pylint --fail-under=9 src/football
+
+    - name: Test with pytest and generate coverage report
+      run:
+        pytest --cov=football --cov-report html tests/
