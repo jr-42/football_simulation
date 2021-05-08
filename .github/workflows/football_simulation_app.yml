@@ -34,7 +34,7 @@ jobs:
 
     - name: Linting with Pylint
       run:
-        pylint src/football
+        pylint --fail-under=9 src/football
 
     - name: Test with pytest and generate coverage report
       run:
