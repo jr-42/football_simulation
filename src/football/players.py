@@ -26,7 +26,7 @@ class Player:
         self.__goals_scored: dict = {}
         self.__appearances: dict = {}
         if team_rating:
-            self.__ca = random.randint(20+((5-team_rating*100)*10), 95)/100.0
+            self.__ca = random.randint(20+((10-team_rating*100)*10), 95)/100.0
         else:
             self.__ca = random.randint(20, 95)/100.0
         self.__fa = min(self.__ca + random.randint(-10, 100)/100.0, 0.95)
@@ -34,10 +34,10 @@ class Player:
                         ) * 1000000
 
     def __repr__(self):
-        return self.name
+        return self.name[0].upper() +'. ' + self.surname
 
     def __str__(self):
-        return self.name
+        return self.name[0].upper() +'. ' + self.surname
 
     @property
     def name(self):
@@ -97,7 +97,7 @@ class Player:
         print(infos)
 
     
-    def appearances(self, season: str, roundd: str=None):
+    def appearances(self, season: str=None, roundd: str=None):
         
         if season:
             if not roundd:
@@ -106,7 +106,7 @@ class Player:
                 return self.__appearances[season][roundd]
 
         else:
-            return sum([sum(i) for i in list(self.__appearances.values())])
+            return sum([sum(i.values()) for i in list(self.__appearances.values())])
 
     def add_appearance(self, season: str, roundd: str, appearance: int=1):
         
@@ -126,7 +126,7 @@ class Player:
             else:
                 return self.__goals_scored[season][roundd]
         else:
-            return sum([sum(i) for i in list(self.__goals_scored.values())])
+            return sum([sum(i.values()) for i in list(self.__goals_scored.values())])
 
     def add_goal(self, season: str, roundd: str, goals_scored: int):
         
@@ -151,6 +151,10 @@ class Goalkeeper(Player):
     def position(self):
         return self.__position
 
+    @property
+    def goalscoring(self):
+        return self.__goal_scoring
+
 
 class Defender(Player):
 
@@ -163,6 +167,10 @@ class Defender(Player):
     @property
     def position(self):
         return self.__position
+
+    @property
+    def goalscoring(self):
+        return self.__goal_scoring
 
 
 class Midfielder(Player):
@@ -177,6 +185,10 @@ class Midfielder(Player):
     def position(self):
         return self.__position
 
+    @property
+    def goalscoring(self):
+        return self.__goal_scoring
+
 
 class Attacker(Player):
 
@@ -189,3 +201,7 @@ class Attacker(Player):
     @property
     def position(self):
         return self.__position
+
+    @property
+    def goalscoring(self):
+        return self.__goal_scoring

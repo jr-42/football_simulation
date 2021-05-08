@@ -1,6 +1,7 @@
 import random
 from typing import Tuple
 from football.teams import Team
+from numpy import cumsum, argmin
 
 
 class Match:
@@ -18,6 +19,8 @@ class Match:
         self.__homegoals: int = None
         self.__awaygoals: int = None
         self.__result: Tuple = None
+        self.__lineups = None
+        self.__scorers: dict = {}
 
     def __str__(self):
         return f"{self.home_team}  {self.home_goals} - {self.away_goals}  {self.away_team}"
@@ -61,6 +64,16 @@ class Match:
     def away_goals(self):
         return self.__awaygoals
 
+    @property
+    def lineups(self):
+        return self.__lineups
+
+    def scorers(self, side: str=None):
+        if side:
+            return self.__scorers[side]
+        else:
+            return self.__scorers
+
     def result_probability(self, team1: Team, team2: Team) -> Tuple[float, float, float]:
         # relative player rating
         team1_r = sum([i.rating for i in team1])/len(team1)/100.0
@@ -86,11 +99,27 @@ class Match:
 
         return (p1, p2, pdr)
 
+    def who_scored(self, home11: list, away11: list, score: tuple) -> list:
+
+        scorers = []
+        for team, score in zip([home11, away11], list(score)):
+            scorers.append([])
+            for goal in range(score):
+                val = random.uniform(0, 1.0)
+                cumsu = cumsum([i.goalscoring for i in team])
+                cumsu_norm = [abs((i/sum(cumsu))-val) for i in cumsu]
+                index = cumsu_norm.index(min(cumsu_norm))
+                scorers[-1].append(team[index])
+
+        return scorers
+            
 
     def play(self) -> Tuple[Team, Team, int, int, Tuple[int, int]]:
 
         home11 = self.home.pick_team()
         away11 = self.away.pick_team()
+
+        self.__lineups = {self.home.name:home11, self.away.name:away11}
 
         h, a, d = self.result_probability(home11, away11)
 
@@ -129,4 +158,16 @@ class Match:
         self.home.add_match(str(self.season_index), str(self.round), self)
         self.away.add_match(str(self.season_index), str(self.round), self)
 
+        for player in home11 + away11:
+            player.add_appearance(str(self.season_index), str(self.round))
+
+        scorers = self.who_scored(home11, away11, score)
+
+        for player in scorers[0] + scorers[1]:
+            player.add_goal(str(self.season_index), str(self.round), 1)
+
+        self.__scorers['home'] = scorers[0]
+        self.__scorers['away'] = scorers[1]
+
+        
         return self.home, self.away, hp, ap, score
