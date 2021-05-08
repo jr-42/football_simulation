@@ -12,9 +12,11 @@ Current features:
 - Relegation (* lose three bottom teams each year)
 - Each team has own play style and rating
 - Each player has own position and basic information 
+- Player stats (scoring and appearances)
+- Lineups for each game
 
 Short Term : Future improvements and features:
-- Player stats (scoring and appearances)
+
 - Rewards for position finished in league (money, improving rating, new players etc)
 - Improve match engine 
 - Take form into account when calculating win/loss probabilities
@@ -31,7 +33,7 @@ Long Term : Future improvements and features:
 ```
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -e .
+pip install .
 ```
 
 ## Example usage  
