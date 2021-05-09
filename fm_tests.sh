@@ -3,6 +3,7 @@ echo -----
 echo Running FM Test Suite
 echo -----
 echo Install
+pip install --upgrade pip
 pip install -U -e .[develop]
 echo -----
 echo Preliminary tests

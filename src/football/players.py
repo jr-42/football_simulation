@@ -101,7 +101,7 @@ class Player:
         
         if season:
             if not roundd:
-                return self.__appearances[season]
+                return sum(self.__appearances[season].values())
             else:
                 return self.__appearances[season][roundd]
 
@@ -111,7 +111,7 @@ class Player:
     def add_appearance(self, season: str, roundd: str, appearance: int=1):
         
         if season in self.__appearances.keys():
-            if str(round) in self.__appearances[season]:
+            if str(round) in self.__appearances[season].keys():
                 self.__appearances[season][roundd].append(appearance)
             else:
                 self.__appearances[season][roundd] = appearance
@@ -122,7 +122,7 @@ class Player:
         
         if season:
             if not roundd:
-                return self.__goals_scored[season]
+                return sum(self.__goals_scored[season].values())
             else:
                 return self.__goals_scored[season][roundd]
         else:
@@ -131,7 +131,7 @@ class Player:
     def add_goal(self, season: str, roundd: str, goals_scored: int):
         
         if season in self.__goals_scored.keys():
-            if str(round) in self.__goals_scored[season]:
+            if str(round) in self.__goals_scored[season].keys():
                 self.__goals_scored[season][roundd].append(goals_scored)
             else:
                 self.__goals_scored[season][roundd] = goals_scored

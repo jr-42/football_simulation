@@ -1,7 +1,7 @@
 import random
 from typing import Tuple
 from football.teams import Team
-from numpy import cumsum, argmin
+from numpy import cumsum
 
 
 class Match:
