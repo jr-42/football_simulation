@@ -84,7 +84,7 @@ class Match:
 
         # home advantage
         team1_r = team1_rn + random.uniform(0.15, 0.2)
-        team2_r = team2_rn + random.uniform(0.05, 0.2)
+        team2_r = team2_rn + random.uniform(0.05, 0.15)
 
         # relative team rating
         team1_r = team1_r + random.uniform(0.1, 0.2)*self.home.rating / \
@@ -92,10 +92,24 @@ class Match:
         team2_r = team2_r + random.uniform(0.1, 0.2)*self.away.rating / \
             (self.home.rating+self.away.rating)
 
+        # form
+
+
         # Final
         p1 = team1_r
         p2 = team2_r
         pdr = 1 - p1 - p2
+
+        if pdr < 0.25+random.uniform(0, 0.05):
+            diff = 0.25 - pdr
+            pdr = 0.25
+            if p1 > p2:
+                p1 = p1 - diff/3.0
+                p2 = p2 - diff/(3.0/2.0)
+            else:
+                p2 = p2 - diff/3.0
+                p1 = p1 - diff/(3.0/2.0)
+
 
         return (p1, p2, pdr)
 

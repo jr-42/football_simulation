@@ -37,7 +37,10 @@ class League:
         return self.__teams_dict[team]
 
     def relegation(self):
-        keep_teams = self.__teams[:-3]
+        current_league = self.__current_season
+        league_table = current_league.league_table
+        keep_teams = league_table.iloc[:-3].loc[:, 'Name'].to_list()
+        keep_teams = [self.__teams_dict[i] for i in keep_teams]
         new_teams= [Team(league=self.__name) for i in range(3)]
         self.__teams = keep_teams + new_teams
         self.__teams_dict = {i.name: i for i in self.__teams}
