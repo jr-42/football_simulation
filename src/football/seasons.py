@@ -104,7 +104,7 @@ class Season:
 
     def make_league_table(self, teams: List):
 
-        cols = ['Name', 'P', 'W', 'D', 'L', 'GF', 'GA', 'GD', 'Points']
+        cols = ['Name', 'P', 'W', 'D', 'L', 'GF', 'GA', 'GD', 'Points', 'Team Rating']
         df = pd.DataFrame(columns=cols)
 
         for i, team in enumerate(teams):
@@ -119,6 +119,7 @@ class Season:
             df.loc[i, 'GA'] = team.goals_against(season=str(self.current_season_index)) 
             df.loc[i, 'GD'] = team.goals_for(season=str(self.current_season_index)) - team.goals_against(season=str(self.current_season_index))
             df.loc[i, 'Points'] = (3*team.wins(season=str(self.current_season_index))) + team.draws(season=str(self.current_season_index)) 
+            df.loc[i, 'Team Rating'] = team.rating
 
         # df.fillna(0, inplace=True)
 

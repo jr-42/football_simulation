@@ -76,6 +76,10 @@ class Team:
     def rating(self):
         return self.__rating
 
+    @rating.setter
+    def rating(self, new_rating: float):
+        self.__rating = new_rating
+
     @property
     def gks(self):
         return self.__gks
@@ -107,10 +111,6 @@ class Team:
     @property
     def league(self):
         return self.__league
-
-    # @league.setter
-    # def league(self, name: str):
-    #     self.__league = name
 
     def played(self, season: str=None):
         if season:
@@ -222,6 +222,38 @@ class Team:
 
     def get_player(self, player: str) -> Player:
         return self.__whole_team[player]
+
+    def upgrade(self, position: int):
+        # upgrade rating
+        position = position + 1 
+        new_rating = self.rating + (0.07*self.rating)/position
+        self.rating = new_rating
+
+        # replace one of worst 3 players with player given new team rating
+        team = self.squadlist.sort_values(by='Rating', inplace=False, ascending=False)
+        worst3 = team.iloc[-3:].loc[:, 'Name'].to_list()
+        get_rid = random.choice(worst3)
+        position = self.get_player(get_rid).position
+        if position == 'gk':
+            new_player = Goalkeeper(team=self.__name, team_rating=new_rating)
+            self.__gks = [i for i in self.__gks if i.name != get_rid] + [new_player]
+        elif position == 'def':
+            new_player = Defender(team=self.__name, team_rating=new_rating)
+            self.__defs = [i for i in self.__defs if i.name != get_rid] + [new_player]
+        elif position == 'mid':
+            new_player = Midfielder(team=self.__name, team_rating=new_rating)
+            self.__mids = [i for i in self.__mids if i.name != get_rid] + [new_player]
+        else:
+            new_player = Attacker(team=self.__name, team_rating=new_rating)
+            self.__atts = [i for i in self.__atts if i.name != get_rid] + [new_player]
+
+        self.__whole_team = self.__gks + self.__defs + self.__mids + self.__atts
+        self.__whole_team = {i.name:i for i in self.__whole_team}
+
+        self.__equip = team_dataframe(self.__gks, self.__defs,
+                                      self.__mids, self.__atts)
+
+
 
     
     def pick_team(self) -> List[Player]:

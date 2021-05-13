@@ -22,6 +22,10 @@ def test_team_creation():
 	assert len([i for i in first11 if isinstance(i, Midfielder)]) == int(formation[1])
 	assert len([i for i in first11 if isinstance(i, Attacker)]) == int(formation[2])
 
+	rating = team.rating
+	team.upgrade(0) #equivalent to finishing first
+	assert team.rating == rating + (0.07*rating)
+
 def test_team_matches():
 
 	team1 = Team(League('Joes League'))

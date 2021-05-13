@@ -45,12 +45,20 @@ class League:
         self.__teams = keep_teams + new_teams
         self.__teams_dict = {i.name: i for i in self.__teams}
 
+    def rewards(self):
+        current_league = self.__current_season
+        league_table = current_league.league_table
+        teams = league_table.loc[:, 'Name'].to_list()
+        for pos, team in enumerate(teams):
+            self.__teams_dict[team].upgrade(position=pos)
+
     def new_season(self) -> Season:
         
         if not self.__seasons:
             self.__seasons = []
         if len(self.__seasons) > 0:
             self.relegation()
+            self.rewards()
         
         season_ = Season(league=self, index=len(self.__seasons)+1)
         self.__seasons.append(season_)

@@ -9,7 +9,7 @@ class Player:
 
     def __init__(self,
                  team: str='Free Agent',
-                 team_rating: int=None,
+                 team_rating: float=None,
                  ):
 
         self.__name = random.choice(player_names).lower().capitalize()
@@ -26,9 +26,9 @@ class Player:
         self.__goals_scored: dict = {}
         self.__appearances: dict = {}
         if team_rating:
-            self.__ca = random.randint(20+((10-team_rating*100)*10), 95)/100.0
+            self.__ca = random.uniform(20+((10-team_rating*100)*10), 95)/100.0
         else:
-            self.__ca = random.randint(20, 95)/100.0
+            self.__ca = random.uniform(20, 95)/100.0
         self.__fa = min(self.__ca + random.randint(-10, 100)/100.0, 0.95)
         self.__value = (self.__ca/100 + self.__fa/100 + (33-self.age)/100.0
                         ) * 1000000
