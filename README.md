@@ -14,10 +14,9 @@ Current features:
 - Each player has own position and basic information 
 - Player stats (scoring and appearances)
 - Lineups for each game
+- Rewards for position finished in league (money, improving rating, new players etc)
 
 Short Term : Future improvements and features:
-
-- Rewards for position finished in league (money, improving rating, new players etc)
 - Improve match engine 
 - Take form into account when calculating win/loss probabilities
 - League heirarchy (promotion and relegation)
